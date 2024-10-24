@@ -1,0 +1,91 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.eot?rhvc7y');
+  src: url('../fonts/icomoon.eot?rhvc7y#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?rhvc7y') format('truetype'),
+    url('../fonts/icomoon.woff?rhvc7y') format('woff'),
+    url('../fonts/icomoon.svg?rhvc7y#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^='icon-'],
+[class*=' icon-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon {
+  font-family: 'icomoon';
+  position: relative;
+
+  &:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.icon-microwave:before {
+  content: '\e900';
+}
+.icon-gas-stove:before {
+  content: '\e901';
+}
+.icon-water:before {
+  content: '\e902';
+}
+.icon-map:before {
+  content: '\e903';
+}
+.icon-star:before {
+  content: '\e904';
+}
+.icon-heart:before {
+  content: '\e905';
+}
+.icon-radio:before {
+  content: '\e906';
+}
+.icon-fuel-pump:before {
+  content: '\e907';
+}
+.icon-fridge:before {
+  content: '\e908';
+}
+.icon-grid-9:before {
+  content: '\e909';
+}
+.icon-grid-4:before {
+  content: '\e90a';
+}
+.icon-grid-3:before {
+  content: '\e90b';
+}
+.icon-shower:before {
+  content: '\e90c';
+}
+.icon-cup:before {
+  content: '\e90d';
+}
+.icon-tramsmission:before {
+  content: '\e90e';
+}
+.icon-ac:before {
+  content: '\e90f';
+}
+.icon-tv:before {
+  content: '\e910';
+}

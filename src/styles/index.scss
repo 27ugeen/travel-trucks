@@ -1,5 +1,6 @@
 @import url('normalize.css');
 @import url('./_variables.scss');
+@import url('./_icons.scss');
 
 * {
   box-sizing: border-box;
@@ -51,4 +52,14 @@ img {
   display: block;
   height: auto;
   max-width: 100%;
+}
+
+.content {
+  padding: 4.8rem 6.4rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }

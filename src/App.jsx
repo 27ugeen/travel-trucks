@@ -1,19 +1,21 @@
-import './App.module.scss';
-import Button from './components/Button/Button';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import Catalog from './pages/Catalog/Catalog';
+import Details from './pages/Details/Details';
 import Header from './components/Header/Header';
 
-function App() {
+const App = () => {
   return (
     <>
       <Header />
-      <Button text="Search" onClick={() => alert('Search')} />
-      <Button
-        text="Load More"
-        onClick={() => alert('Load More')}
-        variant="secondary"
-      />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/item/:id" element={<Details />} />
+        <Route path="/catalog/:id/reviews" element={<Details showReviews />} />
+      </Routes>
     </>
   );
-}
+};
 
 export default App;
