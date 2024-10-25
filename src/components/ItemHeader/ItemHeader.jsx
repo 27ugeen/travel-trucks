@@ -1,43 +1,62 @@
 import FavoriteButton from '../FavoriteButton/FavoriteButton';
-import scss from './ItemHeader.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addToFavorites,
+  deleteFromFavorites,
+  selectFavorites,
+} from '../../redux/campersSlice';
+
+import styles from './ItemHeader.module.scss';
 
 const ItemHeader = ({
+  id,
   title,
   rating,
   reviewsCount,
   location,
   price,
-  isFavorite,
-  onToggleFavorite,
-  pricePosition = 'bottom', // 'right' or 'bottom'
+  pricePosition = 'bottom',
   onReviewsClick,
 }) => {
   const getReviewText = (count) => (count === 1 ? 'review' : 'reviews');
+  const dispatch = useDispatch();
+  const favorites = useSelector(selectFavorites);
+  const isFavorite = favorites.some((fav) => fav.id === id);
+
+  const handleToggleFavorite = () => {
+    if (isFavorite) {
+      dispatch(deleteFromFavorites(id));
+    } else {
+      dispatch(addToFavorites(id));
+    }
+  };
 
   return (
     <div
-      className={`${scss.component} ${pricePosition === 'right' && scss.right}`}
+      className={`${styles.component} ${
+        pricePosition === 'right' && styles.right
+      }`}
     >
-      <div className={scss.topRow}>
-        <h2 className={`${scss.title} ${scss.main}`}>{title}</h2>
-        <div className={scss.info}>
+      <div className={styles.topRow}>
+        <h2 className={`${styles.title} ${styles.main}`}>{title}</h2>
+        <div className={styles.info}>
           <button
-            className={`${scss.rating} ${scss.infoItem}`}
+            className={`${styles.rating} ${styles.infoItem}`}
             onClick={onReviewsClick}
           >
-            <span className={`${scss.star} icon icon-star`}></span>
+            <span className={`${styles.star} icon icon-star`}></span>
             {rating} ({reviewsCount} {getReviewText(reviewsCount)})
           </button>
-          <span className={scss.infoItem}>
-            <span className={`${scss.map} icon icon-map`}></span> {location}
+          <span className={styles.infoItem}>
+            <span className={`${styles.map} icon icon-map`}></span> {location}
           </span>
         </div>
       </div>
-      <div className={scss.priceFavorite}>
-        <span className={scss.main}>€{price}</span>
+      <div className={styles.priceFavorite}>
+        <span className={styles.main}>€{price}</span>
         <FavoriteButton
           isFavorite={isFavorite}
-          onToggleFavorite={onToggleFavorite}
+          handleToggleFavorite={handleToggleFavorite}
         />
       </div>
     </div>

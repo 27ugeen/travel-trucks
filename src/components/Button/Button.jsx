@@ -1,15 +1,17 @@
-import scss from './Button.module.scss';
+import styles from './Button.module.scss';
 
 const Button = ({
   children,
   onClick,
   variant = 'primary',
   validation = true,
+  type = 'button',
 }) => {
   return (
     <button
-      className={`${scss.button} ${scss[variant]} ${
-        !validation ? scss.disabled : ''
+      type={type}
+      className={`${styles.button} ${styles[variant]} ${
+        !validation ? styles.disabled : ''
       }`}
       onClick={onClick}
       disabled={!validation}

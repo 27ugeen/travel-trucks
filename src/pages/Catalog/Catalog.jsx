@@ -1,11 +1,11 @@
 import ItemList from '../../components/ItemList/ItemList';
 import SearchForm from '../../components/SearchForm/SearchForm';
-import scss from './Catalog.module.scss';
+import styles from './Catalog.module.scss';
 
 const Catalog = () => {
   return (
     <div className="content">
-      <div className={scss.catalog}>
+      <div className={styles.catalog}>
         <SearchForm />
         <ItemList />
       </div>

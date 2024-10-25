@@ -1,23 +1,24 @@
-import scss from './FilterItem.module.scss';
+import styles from './FilterItem.module.scss';
 
 const FilterItem = ({ filter, onFilterChange }) => {
   const handleClick = () => {
-    onFilterChange(filter.id);
+    onFilterChange(filter.id, filter.type);
   };
 
   return (
     <div
-      className={`${scss.component} ${filter.isChecked ? scss.active : ''}`}
+      className={`${styles.component} ${filter.isChecked ? styles.active : ''}`}
       onClick={handleClick}
     >
-      <span className={`${scss.icon} icon ${filter.iconName}`}></span>
+      <span className={`${styles.icon} icon ${filter.iconName}`}></span>
       <input
-        className={scss.checkbox}
+        className={styles.checkbox}
         type="checkbox"
+        name={filter.name}
         checked={filter.isChecked}
         onChange={handleClick}
       />
-      <span className={scss.text}>{filter.name}</span>
+      <span className={styles.text}>{filter.label}</span>
     </div>
   );
 };

@@ -1,74 +1,99 @@
-import { useState } from 'react';
-import Input from '../Input/Input';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import FilterGroup from '../FilterGroup/FilterGroup';
 import Button from '../Button/Button';
-import { equipmentFilters, vehicleTypeFilters } from '../../data/filtersData';
-import scss from './SearchForm.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  changeLocation,
+  toggleFilter,
+  selectFilters,
+  selectLocation,
+} from '../../redux/filtersSlice';
+import { filterCampers } from '../../redux/campersSlice';
+
+import styles from './SearchForm.module.scss';
 
 const SearchForm = () => {
-  const [location, setLocation] = useState('');
-  const [filters, setFilters] = useState({
-    equipment: equipmentFilters,
-    vehicleType: vehicleTypeFilters,
-  });
+  const dispatch = useDispatch();
+  const filters = useSelector(selectFilters);
+  const location = useSelector(selectLocation);
 
-  const handleFilterChange = (group, id) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [group]: prevFilters[group].map((filter) =>
-        filter.id === id ? { ...filter, isChecked: !filter.isChecked } : filter
-      ),
-    }));
+  const handleFilterChange = (id, group) => {
+    dispatch(toggleFilter({ id, group }));
   };
 
   const handleLocationChange = (event) => {
-    setLocation(event.target.value);
+    dispatch(changeLocation(event.target.value));
   };
 
-  const handleSearch = () => {
-    const selectedFilters = {
-      location,
-      equipment: filters.equipment
-        .filter((item) => item.isChecked)
-        .map((item) => item.name),
-      vehicleType: filters.vehicleType
-        .filter((item) => item.isChecked)
-        .map((item) => item.name),
-    };
-    console.log('params:', selectedFilters);
+  const handleSubmit = () => {
+    const filterParams = filters
+      .filter((filter) => filter.isChecked)
+      .reduce((acc, filter) => {
+        acc[filter.name] = true;
+        return acc;
+      }, {});
+
+    dispatch(
+      filterCampers({
+        location,
+        ...filterParams,
+      })
+    );
   };
 
   return (
-    <form className={scss.component}>
-      <Input
-        label="Location"
-        placeholder="City"
-        icon="icon-map"
-        name="Location"
-        value={location}
-        onChange={handleLocationChange}
-      />
-      <div className={scss.filters}>
-        <h3 className={scss.filtersTitle}>Filters</h3>
-        <FilterGroup
-          title="Vehicle equipment"
-          filters={filters.equipment}
-          onFilterChange={(id) => handleFilterChange('equipment', id)}
-        />
-        <FilterGroup
-          title="Vehicle type"
-          filters={filters.vehicleType}
-          onFilterChange={(id) => handleFilterChange('vehicleType', id)}
-        />
-      </div>
-      <Button
-        type="button"
-        onClick={handleSearch}
-        className={scss.searchButton}
-      >
-        Search
-      </Button>
-    </form>
+    <Formik
+      initialValues={{
+        location: location || '',
+      }}
+      validationSchema={Yup.object({
+        location: Yup.string().min(2, 'Too short..'),
+      })}
+      onSubmit={handleSubmit}
+    >
+      {({ values }) => (
+        <Form className={styles.component}>
+          <div className="input-wrapper">
+            <label className="label">Location</label>
+            <div className="input-container">
+              <span
+                className={`input-icon icon-map ${
+                  values.location ? 'icon-active' : ''
+                }`}
+              />
+              <Field
+                type="text"
+                name="location"
+                placeholder="City"
+                autoComplete="off"
+                value={location}
+                onChange={handleLocationChange}
+              />
+            </div>
+            <ErrorMessage name="location" component="span" className="error" />
+          </div>
+
+          <div className={styles.filters}>
+            <h3 className={styles.filtersTitle}>Filters</h3>
+            <FilterGroup
+              title="Vehicle Equipment"
+              filters={filters.filter((filter) => filter.type === 'equipment')}
+              onFilterChange={handleFilterChange}
+            />
+            <FilterGroup
+              title="Vehicle Type"
+              filters={filters.filter((filter) => filter.type === 'vehicle')}
+              onFilterChange={(id) => handleFilterChange(id, 'vehicle')}
+            />
+          </div>
+
+          <Button type="submit" className={styles.searchButton}>
+            Search
+          </Button>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

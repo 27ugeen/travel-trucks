@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import scss from './Home.module.scss';
 import Button from '../../components/Button/Button';
+
+import styles from './Home.module.scss';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -10,10 +11,10 @@ const Home = () => {
   };
 
   return (
-    <div className={scss.component}>
+    <div className={styles.component}>
       <div className="content">
-        <h1 className={scss.title}>Campers of your dreams</h1>
-        <h2 className={scss.subtitle}>
+        <h1 className={styles.title}>Campers of your dreams</h1>
+        <h2 className={styles.subtitle}>
           You can find everything you want in our catalog
         </h2>
         <Button onClick={handleButtonClick}>View now</Button>

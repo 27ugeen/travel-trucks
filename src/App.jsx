@@ -1,19 +1,43 @@
 import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home/Home';
-import Catalog from './pages/Catalog/Catalog';
-import Details from './pages/Details/Details';
+import { lazy, Suspense } from 'react';
+import { Bounce, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header/Header';
+import Loader from './components/Loader/Loader';
+
+const Home = lazy(() => import('./pages/Home/Home'));
+const Catalog = lazy(() => import('./pages/Catalog/Catalog'));
+const Details = lazy(() => import('./pages/Details/Details'));
+const NotFound = lazy(() => import('./pages/NotFound/NotFound'));
+const Favorites = lazy(() => import('./pages/Favorites/Favorites'));
 
 const App = () => {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/item/:id" element={<Details />} />
-        <Route path="/catalog/:id/reviews" element={<Details showReviews />} />
-      </Routes>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/:id/*" element={<Details />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
     </>
   );
 };
